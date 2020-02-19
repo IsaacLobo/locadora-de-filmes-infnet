@@ -14,6 +14,14 @@
         <li v-for="filme in filmes" v-bind:key="filme">{{ filme }}</li>
       </ul>
     </b-row>
+     <div class="row">
+     <div class="col">
+       <h2>Filmes encontrados</h2>
+       <button type="button" class="btn btn-primary btn-lg">
+         Carrinho: {{ quantidadeNoCarrinho}} filmes
+       </button>
+     </div>
+   </div>
     <b-row>
       <div class="cards">
         <b-card  :key="filme.id" v-for="filme in filmes_obj"
@@ -33,7 +41,7 @@
           <b-card-text>
             {{ filme.valor | formatarPreco("R$")}}    
           </b-card-text>
-          <b-button href="#" variant="primary">Alugar</b-button>
+          <b-button href="#" @click="adicionarAoCarrinho(filme)" variant="primary">Alugar</b-button>
         </b-card>
       </div>
     </b-row>
@@ -57,9 +65,27 @@ export default {
       { id: 6, titulo: "Hulk", descricao: "Um filme de força", valor: 10, imagem:"https://br.web.img2.acsta.net/c_215_290/pictures/210/485/21048566_20131010182211313.jpg" }
 
      ],
-     filmes: ['Vingadores', 'Homem de Ferro', 'Hulk', 'Pantera negra']
+     filmes: ['Vingadores', 'Homem de Ferro', 'Hulk', 'Pantera negra'],
+     carrinho:[]
    }
- }
+ },
+ methods:{
+    adicionarAoCarrinho:function(filme){
+      this.carrinho.push(filme.id);
+    },
+    quantidadeNoCarrinhoPorFilme:function(filme){
+      return this.carrinho.filter(elem=> elem === filme.id).length;
+    },
+    validarPermissaoParaAdicionarNoCarrinho:function(filme){
+      return filme.estoqueDisponivel > this.quantidadeNoCarrinhoPorFilme(filme);
+    } 
+   },
+   computed:{
+     quantidadeNoCarrinho:function(){
+       return this.carrinho.length;
+     }
+
+   }
 }
 </script>
 
