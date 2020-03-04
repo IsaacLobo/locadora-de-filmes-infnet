@@ -37,21 +37,29 @@
           <b-card-text>
             {{ filme.descricao }}    
           </b-card-text>
-
+        <span class="mensagem-estoque"
+        v-if="filme.estoqueDisponivel - quantidadeNoCarrinhoPorFilme(filme) <5">
+          Apenas {{filem.estoqueDisponivel - quantidadeNoCarrinhoPorFilme(filme)}} itens no estoque.
+        </span>
           <b-card-text>
             {{ filme.valor | formatarPreco("R$")}}    
           </b-card-text>
           <b-button href="#" @click="adicionarAoCarrinho(filme)" variant="primary">Alugar</b-button>
         </b-card>
       </div>
+      <Carrinho/>
     </b-row>
   </div>
 </template>
 
 <script>
+
+import Carrinho from './Carrinho.vue'
+
 export default {
   name: 'Home',
   props: { },
+  components:{Carrinho},
   data: function() {
    return {
      title: "Locadora de Filmes",
@@ -112,5 +120,8 @@ export default {
  
 #fechada {
   color: red;
+}
+.mensagem-estoque{
+  font-weight: bold;
 }
 </style>
